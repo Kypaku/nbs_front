@@ -1,4 +1,5 @@
 # nbs_front
+Init
 
 ## Project setup
 ```
