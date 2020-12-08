@@ -1,19 +1,19 @@
-import Notebook from '@/types/Notebook';
-import { Getters } from '@/types/store';
+import Notebook from '@/types/Notebook'
+import { Getters } from '@/types/store'
 import { Commit, Dispatch, ActionTree } from 'vuex'
 import api from '../../api'
-import Vue from 'vue';
-import Cell from '@/types/Cell';
+import Vue from 'vue'
+import Cell from '@/types/Cell'
 
 export interface State {
-    notebooks: Notebook[],
-    current: null | Notebook,
+    notebooks: Notebook[];
+    current: null | Notebook;
 }
 
 export default {
     state: {
         notebooks: [],
-        current: null,
+        current: null
     } as State,
     mutations: {
         ADD_NOTEBOOK: (state: State, notebook: Notebook) => {
@@ -37,29 +37,29 @@ export default {
         },
         ADD_CELL: (state: State, cell: Cell) => {
             const id = ID
-            state.current && state.current.cells.push({id, ...cell})
+            state.current && state.current.cells.push({ id, ...cell })
         },
         EDIT_CELL: (state: State, cell: Cell) => {
-            if(!state.current) return
+            if (!state.current) return
             const item = state.current.cells.find(el => el.id === cell.id)
             item && Object.entries(cell).forEach(el => {
                 Vue.set(item, el[0], el[1])
             })
         },
         DELETE_CELL: (state: State, id: string) => {
-            if(!state.current) return
+            if (!state.current) return
             state.current.cells = state.current.cells.filter(el => el.id !== id)
         },
         REARRANGE_CELLS: (state: State, order: [string, number][]) => {
-            if(!state.current) return
+            if (!state.current) return
             const old = [...state.current.cells]
             state.current.cells = []
             order.forEach(el => {
                 state.current && Vue.set(state.current.cells, el[1], old.find(_el => _el.id === el[0]))
             })
-        },
+        }
     },
     actions: {
-        //notebooks: open, create, rename, save, delete
+        // notebooks: open, create, rename, save, delete
     }
 }

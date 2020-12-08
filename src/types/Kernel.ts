@@ -1,10 +1,10 @@
 export default interface Kernel {
-    name: string,
+    name: string;
     // port: number,
-    settings: KernelSettings,
-    status: string,
+    settings: KernelSettings;
+    status: string;
 }
 
 export interface KernelSettings {
-    
+
 }

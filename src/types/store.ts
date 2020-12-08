@@ -4,12 +4,12 @@ import { State as KernelsState } from '@/store/modules/kernels'
 import { State as SettingsState } from '@/store/modules/settings'
 
 export interface Getters {
-    [key: string]: any
+    [key: string]: any;
 }
 
 export default interface Store {
-    fileSystem: FileSystemState
-    notebooks: NotebooksState
-    kernels: KernelsState
-    settings: SettingsState
-} 
+    fileSystem: FileSystemState;
+    notebooks: NotebooksState;
+    kernels: KernelsState;
+    settings: SettingsState;
+}

@@ -1,10 +1,10 @@
-import Cell from './Cell';
+import Cell from './Cell'
 
 export default interface Notebook {
-    preferences: NotebookPreferences,
-    kernelName: string,
-    cells: Cell[],
-    filename: string
+    preferences: NotebookPreferences;
+    kernelName: string;
+    cells: Cell[];
+    filename: string;
 }
 
 export interface NotebookPreferences {

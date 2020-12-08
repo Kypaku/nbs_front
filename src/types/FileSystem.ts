@@ -1,15 +1,15 @@
 export default interface FileSystem {
-    root: Directory
+    root: Directory;
 }
 
 export interface Directory {
-    name: string,
-    files: (File | Directory)[],
+    name: string;
+    files: (File | Directory)[];
 }
 
 export interface File {
-    name: string,
-    info: null | FileInfo,
+    name: string;
+    info: null | FileInfo;
 }
 
 export interface FileInfo {

@@ -13,7 +13,7 @@ export default new Vuex.Store({
         fileSystem,
         kernels,
         settings,
-        notebooks,
+        notebooks
     },
     getters
 })
