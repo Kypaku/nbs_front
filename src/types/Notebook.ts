@@ -4,6 +4,7 @@ export default interface Notebook {
     preferences: NotebookPreferences;
     kernelName: string;
     cells: Cell[];
+    currentCell: Cell;
     filename: string;
 }
 

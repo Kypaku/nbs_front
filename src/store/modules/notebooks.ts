@@ -13,7 +13,7 @@ export interface State {
 export default {
     state: {
         notebooks: [],
-        current: null
+        current: null,
     } as State,
     mutations: {
         ADD_NOTEBOOK: (state: State, notebook: Notebook) => {
@@ -35,9 +35,17 @@ export default {
                 Vue.set(state.notebooks, el[1], old.find(_el => _el.filename === el[0]))
             })
         },
+        SET_CURRENT: (state: State, notebook: Notebook) => {
+            state.current = notebook
+        },        
         ADD_CELL: (state: State, cell: Cell) => {
             const id = ID
             state.current && state.current.cells.push({ id, ...cell })
+        },
+        INSERT_CELL: (state: State, { cell, pos }: { cell: Cell, pos: number }) => {
+            if (!state.current) return
+            const id = ID
+            state.current.cells.splice( pos, 0, {id, ...cell} );
         },
         EDIT_CELL: (state: State, cell: Cell) => {
             if (!state.current) return
@@ -57,7 +65,11 @@ export default {
             order.forEach(el => {
                 state.current && Vue.set(state.current.cells, el[1], old.find(_el => _el.id === el[0]))
             })
-        }
+        },
+        SET_CURRENT_CELL: (state: State, cell: Cell) => {
+            if (!state.current) return
+            state.current.currentCell = cell
+        },         
     },
     actions: {
         // notebooks: open, create, rename, save, delete

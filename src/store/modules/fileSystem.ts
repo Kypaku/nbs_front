@@ -10,6 +10,10 @@ export default {
 
     },
     actions: {
-
+        //getList
+        //open notebook
+        //open in editor
+        //rename
+        //delete to trash
     }
 }
