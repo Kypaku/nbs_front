@@ -1,3 +1,8 @@
+Node.js Computation Notebooks.
+Use it with Backend: https://github.com/Kypaku/nbs_back
+
+DON'T FORGET TO SECURE YOUR BACKEND PORT
+
 # nbs_front
 Init
 
