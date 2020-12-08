@@ -1,5 +1,5 @@
 import Kernel from '@/types/Kernel'
-import { Getters } from '@/types/store';
+import { Getters } from '../../types/store'
 import { Commit, Dispatch, ActionTree } from 'vuex'
 import api from '../../api'
 
