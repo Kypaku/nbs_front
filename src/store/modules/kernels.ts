@@ -2,6 +2,9 @@ import Kernel from '@/types/Kernel'
 import { Getters } from '../../types/store'
 import { Commit, Dispatch, ActionTree } from 'vuex'
 import api from '../../api'
+import Vue from 'vue'
+import Cell from '@/types/Cell'
+
 
 export interface State {
     kernels: Kernel[];
@@ -19,17 +22,19 @@ export default {
         },
         DEL_KERNEL: (state: State, name: string) => {
             state.kernels = state.kernels.filter(kernel => kernel.name !== name)
-        }
+        },
         // RENAME_KERNEL
-        // UPD_KERNEL: (state: State, {name, settings} : {name: string, settings: Pub[]}) => {
-        //     for (const kernel of state.kernels) {
-        //         if(kernel._id == _id){
-        //             kernel.pubs = pubs
-        //             return true
-        //         }
-        //     }
-        // },
-        // SET_CURRENT
+        UPD_KERNEL: (state: State, {name, attr, value, valueJson}: {name: string, attr: string, value: any, valueJson: any}) => {
+            for (const kernel of state.kernels) {
+                if (kernel.name === name) {
+                    Vue.set(kernel, attr, value || valueJson)
+                    return true
+                }
+            }
+        },
+        SET_CURRENT_KERNEL: (state: State, kernel: Kernel) => {
+            state.current = kernel
+        },
     },
     actions: {
         async addKernel({ commit, getters }: { commit: Commit; getters: Getters }, kernel: Kernel) {
@@ -52,8 +57,27 @@ export default {
                 // commit('SET_ERROR', 'Failed to delete kernel')
                 throw e
             }
-        }
-        //edit
-        //eval
+        },
+        async editKernel({ commit, getters }: { commit: Commit; getters: Getters }, {name, attr, value, valueJson}: {name: string, attr: string, value: any, valueJson: any}) {
+            try {
+                const req = await api.put('/kernels/' + name, { attr, value, valueJson: JSON.stringify(valueJson) })
+                commit('UPD_KERNEL', {name, attr, value, valueJson})
+                return req
+            } catch (e) {
+                // commit('SET_ERROR', 'Failed to delete kernel')
+                throw e
+            }
+        },
+        async eval({ commit, getters }: { commit: Commit; getters: Getters }, {kernel, cell}: {kernel: Kernel, cell: Cell}) {
+            try {
+                const req = await api.post('/kernels/eval/' + kernel.name, {content: cell.input.content})
+                const data = req.data.data
+                commit('EDIT_CELL', {id: cell.id, output: {...cell.output, content: data}})
+                return true
+            } catch (e) {
+                // commit('SET_ERROR', 'Failed to add kernel')
+                throw e
+            }
+        },
     }
 }

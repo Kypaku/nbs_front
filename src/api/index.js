@@ -4,7 +4,7 @@ import { JSONtoURL } from '../helpers'
 
 const API_URL = 'http://localhost:3000'
 
-const token = '5e19c210-3a16-11eb-9d4d-c37e963ce38a'
+const token = 'kihfruz40.4zicg6hdgj0.3kwv9wjkcd8'
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
