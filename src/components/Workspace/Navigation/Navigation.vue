@@ -11,7 +11,7 @@
     // Horizontal Scroll, Drag, Autosort
     import { mapGetters, mapMutations } from 'vuex'
     import { Vue } from 'vue-property-decorator'
-import Notebook from '@/types/Notebook'
+    import Notebook from '@/types/Notebook'
 
     export default Vue.extend({
         components: {

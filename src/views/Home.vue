@@ -1,9 +1,9 @@
 <template>
     <div class="home">
-        <div class="fs-wrap">
+        <div class="fs-wrap h-100vh left">
             <FileSystem/>
         </div>
-        <div class="ws-wrap">
+        <div class="ws-wrap right h-100vh">
             <Workspace/>
         </div>
     </div>
@@ -25,11 +25,12 @@
 
 <style lang="scss" scoped>
 	.ws-wrap{
-		width: 75%;
+        width: 75%;
+        background: rgb(230, 237, 240);
 	}
 	.fs-wrap{
 		width: 25%;
-        border: 1px solid lightblue;
+        background: rgb(203, 225, 233);
 	}
 
 </style>

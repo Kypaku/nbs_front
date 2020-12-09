@@ -2,6 +2,7 @@ import Notebook from '@/types/Notebook'
 import { Getters } from '@/types/store'
 import { Commit, Dispatch, ActionTree } from 'vuex'
 import api from '../../api'
+import { uuid } from '../../helpers/index'
 import Vue from 'vue'
 import Cell from '@/types/Cell'
 
@@ -39,13 +40,13 @@ export default {
             state.current = notebook
         },        
         ADD_CELL: (state: State, cell: Cell) => {
-            const id = ID
-            state.current && state.current.cells.push({ id, ...cell })
+            const id = uuid()
+            state.current && state.current.cells.push({ ...cell, id })
         },
-        INSERT_CELL: (state: State, { cell, pos }: { cell: Cell, pos: number }) => {
+        INSERT_CELL: (state: State, { cell, pos }: { cell: Cell; pos: number }) => {
             if (!state.current) return
-            const id = ID
-            state.current.cells.splice( pos, 0, {id, ...cell} );
+            const id = uuid()
+            state.current.cells.splice(pos, 0, { ...cell, id })
         },
         EDIT_CELL: (state: State, cell: Cell) => {
             if (!state.current) return

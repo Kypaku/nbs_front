@@ -1,6 +1,8 @@
 <template>
     <div class="workspace">
-        <Navigation/>
+        <div class="nav-wrap">
+            <Navigation/>
+        </div>
         <Notebook v-if="current"/>
     </div>
 </template>
@@ -33,5 +35,7 @@
     </script>
 
 <style lang="scss" scoped>
-
+	.nav-wrap{
+		height: 50px;
+	}
 </style>

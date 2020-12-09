@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+	import { mapActions } from 'vuex'
     import Vue from 'vue'
 
     export default Vue.extend({
@@ -18,7 +19,13 @@
 
         data: () => ({
             //
-        })
+        }),
+        methods: {
+            ...mapActions(['addKernel']),
+        },
+        created() {
+            this.addKernel({ name: 'Default', status: 'started' })
+        },
     })
 </script>
 
