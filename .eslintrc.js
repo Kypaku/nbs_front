@@ -15,7 +15,12 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     indent: 'off',
-    'space-before-function-paren': 'off'
+    'space-before-function-paren': 'off',
+    'no-trailing-spaces': 'warn',
+    'no-tabs': 'warn',
+    'spaced-comment': 'warn',
+    '@typescript-eslint/no-empty-interface': 'warn',
+    'comma-dangle': 'off',
   },
   overrides: [
     {

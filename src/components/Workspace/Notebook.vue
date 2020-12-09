@@ -11,10 +11,11 @@
     import { mapGetters, mapMutations } from 'vuex'
     import { Vue } from 'vue-property-decorator'
     import Cell from './../Cells/Cell.vue'
+    import CellInterface from '@/types/Cell'
 
     export default Vue.extend({
         components: {
-	        Cell,
+             Cell,
         },
         data() {
             return {
@@ -27,15 +28,15 @@
         },
         methods: {
             ...mapMutations(['INSERT_CELL', 'DELETE_CELL']),
-			add(pos: Number) {
-                this.INSERT_CELL({cell, pos})
+			add(pos: number) {
+                // this.INSERT_CELL({ cell, pos })
             },
-            delete(cell){
+            delete(cell: CellInterface) {
                 this.DELETE_CELL(cell.id)
             },
-            save(){
-                //save action
-            }            
+            save() {
+                // save action
+            }
         },
     })
 

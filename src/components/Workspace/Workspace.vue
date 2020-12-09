@@ -1,11 +1,12 @@
 <template>
     <div class="workspace">
         <Navigation/>
-        <Notebook/>
+        <Notebook v-if="current"/>
     </div>
 </template>
 
 <script lang='ts'>
+    import { mapGetters } from 'vuex'
     import { Vue } from 'vue-property-decorator'
     import Navigation from './Navigation/Navigation.vue'
     import Notebook from './Notebook.vue'
@@ -21,6 +22,7 @@
             }
         },
         computed: {
+            ...mapGetters(['current']),
 
         },
         methods: {
