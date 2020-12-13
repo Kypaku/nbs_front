@@ -47,5 +47,8 @@
     </script>
 
 <style lang="scss" scoped>
+	.notebook{
+		padding: 0 16px;
+	}
 
 </style>
