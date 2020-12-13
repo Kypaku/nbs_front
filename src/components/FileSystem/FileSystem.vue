@@ -1,23 +1,26 @@
 <template>
     <div class="filesystem">
-        <Teatree :roots="data">
+        <Teatree :roots="formatted">
             <template slot="node-toggle" slot-scope="{ node }">
                 <NodeToggle :node="node" />
             </template>
             <template slot="node-name" slot-scope="{ node }">
                 <NodeName
                 :node="node"
-                :handleNodeLeftClick="() => {}"
+                :handleNodeLeftClick="() => open(node)"
                 :handleNodeRightClick="() => {}"
                 />
             </template>
         </Teatree>
+        {{files}}
     </div>
 </template>
 
 <script lang='ts'>
-    import { Vue } from 'vue-property-decorator'
+    import { Directory, File } from '@/types/FileSystem'
+import { Vue } from 'vue-property-decorator'
     import { Teatree, NodeType, NodeName, NodeToggle } from 'vue-teatree'
+import { mapActions, mapGetters } from 'vuex'
 
     const data: NodeType[] = [
         {
@@ -57,9 +60,30 @@
             }
         },
         computed: {
-
+            ...mapGetters(['files']),
+            formatted(): NodeType[] {
+                return this.files.map((file: File | Directory) => {
+                    const splitted = file.name.split('/')
+                    return {
+                        name: splitted[splitted.length - 1],
+                        show: true,
+                        children: [],
+                        showChildren: file.info?.isDir,
+                        data: file
+                    }
+                })
+            }
         },
         methods: {
+            ...mapActions(['openFile', 'getFiles']),
+			open(node: NodeType) {
+                if (node.data.info.isDir) {
+                    //get children
+                    // this.getFiles(node.data.name)
+                } else {
+                    this.openFile(node.data.name)
+                }
+			},
             // getList
             // open notebook
             // open in editor

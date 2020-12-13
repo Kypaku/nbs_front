@@ -5,7 +5,6 @@ import api from '../../api'
 import Vue from 'vue'
 import Cell from '@/types/Cell'
 
-
 export interface State {
     kernels: Kernel[];
     current: null | Kernel;
@@ -17,6 +16,9 @@ export default {
         current: null
     } as State,
     mutations: {
+		SET_KERNELS: (state: State, kernels: Kernel[]) => {
+            state.kernels = kernels
+        },
         ADD_KERNEL: (state: State, kernel: Kernel) => {
             state.kernels.push(kernel)
         },
@@ -24,7 +26,7 @@ export default {
             state.kernels = state.kernels.filter(kernel => kernel.name !== name)
         },
         // RENAME_KERNEL
-        UPD_KERNEL: (state: State, {name, attr, value, valueJson}: {name: string, attr: string, value: any, valueJson: any}) => {
+        UPD_KERNEL: (state: State, { name, attr, value, valueJson }: { name: string; attr: string; value: any; valueJson: any }) => {
             for (const kernel of state.kernels) {
                 if (kernel.name === name) {
                     Vue.set(kernel, attr, value || valueJson)
@@ -36,13 +38,28 @@ export default {
             state.current = kernel
         },
     },
-    actions: {
+    actions: {        
+        async getKernels({ commit }: { commit: Commit }) {
+            try {
+                const req = await api.get('/kernels')
+                const data = req.data
+                commit('SET_KERNELS', data)
+                return true
+            } catch (e) {
+                // commit('SET_ERROR', 'Failed to add kernel')
+                throw e
+            }
+        },
         async addKernel({ commit, getters }: { commit: Commit; getters: Getters }, kernel: Kernel) {
             try {
-                const req = await api.post('/kernels', kernel)
-                const data = req.data.data
-                commit('ADD_KERNEL', data)
-                return true
+                if (getters.kernels.find((el: Kernel) => el.name === kernel.name)) {
+                    // commit('SET_ERROR', 'Kernel is alredy exists')
+                } else {                    
+                    const req = await api.post('/kernels', kernel)
+                    const data = req.data
+                    commit('ADD_KERNEL', data)
+                    return true
+                }
             } catch (e) {
                 // commit('SET_ERROR', 'Failed to add kernel')
                 throw e
@@ -58,21 +75,21 @@ export default {
                 throw e
             }
         },
-        async editKernel({ commit, getters }: { commit: Commit; getters: Getters }, {name, attr, value, valueJson}: {name: string, attr: string, value: any, valueJson: any}) {
+        async editKernel({ commit, getters }: { commit: Commit; getters: Getters }, { name, attr, value, valueJson }: { name: string; attr: string; value: any; valueJson: any }) {
             try {
                 const req = await api.put('/kernels/' + name, { attr, value, valueJson: JSON.stringify(valueJson) })
-                commit('UPD_KERNEL', {name, attr, value, valueJson})
+                commit('UPD_KERNEL', { name, attr, value, valueJson })
                 return req
             } catch (e) {
                 // commit('SET_ERROR', 'Failed to delete kernel')
                 throw e
             }
         },
-        async eval({ commit, getters }: { commit: Commit; getters: Getters }, {kernel, cell}: {kernel: Kernel, cell: Cell}) {
+        async eval({ commit, getters }: { commit: Commit; getters: Getters }, { kernel, cell }: { kernel: Kernel; cell: Cell }) {
             try {
-                const req = await api.post('/kernels/eval/' + kernel.name, {content: cell.input.content})
-                const data = req.data.data
-                commit('EDIT_CELL', {id: cell.id, output: {...cell.output, content: data}})
+                const req = await api.post('/kernels/eval/' + kernel.name, { content: cell.input.content })
+                const data = req.data
+                commit('EDIT_CELL', { id: cell.id, output: { ...cell.output, content: data } })
                 return true
             } catch (e) {
                 // commit('SET_ERROR', 'Failed to add kernel')

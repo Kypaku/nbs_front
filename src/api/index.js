@@ -4,7 +4,9 @@ import { JSONtoURL } from '../helpers'
 
 const API_URL = 'http://localhost:3000'
 
-const token = 'kihfruz40.4zicg6hdgj0.3kwv9wjkcd8'
+const token = 'kin6crrh0.mhkttl7lyt0.maxizxxc94b'
+
+export const startDir = 'E:\\NodeScripts\\nbs'
 
 const axiosInstance = axios.create({
     baseURL: API_URL,

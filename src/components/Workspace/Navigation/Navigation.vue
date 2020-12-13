@@ -1,6 +1,6 @@
 <template>
     <div class="navigation">
-        <div class="nav-item pointer" :class="{active: nb.filename === current.filename}" v-for="nb in notebooks" :key="nb.filename" @click="activate(nb)">
+        <div class="nav-item pointer" :class="{active: nb.filename === (current && current.filename)}" v-for="nb in notebooks" :key="nb.filename" @click="activate(nb)">
             {{nb.filename}}
             <v-btn text @click="close(nb)">X</v-btn>
         </div>
@@ -40,5 +40,8 @@
     </script>
 
 <style lang="scss" scoped>
+	.active{
+        background: rgb(221, 230, 233);
+	}
 
 </style>

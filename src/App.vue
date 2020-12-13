@@ -9,6 +9,7 @@
 <script lang="ts">
 	import { mapActions } from 'vuex'
     import Vue from 'vue'
+    import { startDir } from './api'
 
     export default Vue.extend({
         name: 'App',
@@ -21,9 +22,11 @@
             //
         }),
         methods: {
-            ...mapActions(['addKernel']),
+            ...mapActions(['addKernel', 'getKernels', 'getFiles']),
         },
-        created() {
+        async created() {
+            this.getFiles(startDir)
+            await this.getKernels()
             this.addKernel({ name: 'Default', status: 'started' })
         },
     })

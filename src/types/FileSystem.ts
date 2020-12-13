@@ -5,6 +5,7 @@ export default interface FileSystem {
 export interface Directory {
     name: string;
     files: (File | Directory)[];
+    info: null | FileInfo;
 }
 
 export interface File {
@@ -13,5 +14,5 @@ export interface File {
 }
 
 export interface FileInfo {
-
+    isDir: boolean
 }
