@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-	import { mapActions } from 'vuex'
+	import { mapActions, mapGetters, mapMutations } from 'vuex'
     import Vue from 'vue'
     import { startDir } from './api'
 
@@ -21,13 +21,18 @@
         data: () => ({
             //
         }),
+        computed: {
+            ...mapGetters(['kernels'])
+        },
         methods: {
             ...mapActions(['addKernel', 'getKernels', 'getFiles']),
+            ...mapMutations(['SET_CURRENT_KERNEL'])
         },
         async created() {
             this.getFiles(startDir)
             await this.getKernels()
-            this.addKernel({ name: 'Default', status: 'started' })
+            await this.addKernel({ name: 'Default', status: 'started' })
+            this.SET_CURRENT_KERNEL(this.kernels[this.kernels.length - 1])
         },
     })
 </script>

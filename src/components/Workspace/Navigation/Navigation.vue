@@ -1,5 +1,5 @@
 <template>
-    <div class="navigation">
+    <div class="navigation d-flex">
         <div class="nav-item pointer" :class="{active: nb.filename === (current && current.filename)}" v-for="nb in notebooks" :key="nb.filename" @click="activate(nb)">
             {{nb.filename}}
             <v-btn text @click="close(nb)">X</v-btn>
@@ -40,8 +40,11 @@
     </script>
 
 <style lang="scss" scoped>
+	.nav-item {
+		background: rgb(221, 230, 233);
+	}
 	.active{
-        background: rgb(221, 230, 233);
+        background: rgb(230, 237, 240);
 	}
 
 </style>

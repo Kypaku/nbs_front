@@ -40,8 +40,13 @@ export default {
             state.current = notebook
         },        
         ADD_CELL: (state: State, cell: Cell) => {
+            if (!state.current) return
             const id = uuid()
-            state.current && state.current.cells.push({ ...cell, id })
+            if (state.current.cells) {
+                state.current.cells.push({ ...cell, id })
+            } else {
+                Vue.set(state.current, 'cells', [cell])
+            }            
         },
         INSERT_CELL: (state: State, { cell, pos }: { cell: Cell; pos: number }) => {
             if (!state.current) return

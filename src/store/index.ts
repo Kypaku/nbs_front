@@ -5,6 +5,11 @@ import fileSystem from './modules/fileSystem'
 import kernels from './modules/kernels'
 import settings from './modules/settings'
 import notebooks from './modules/notebooks'
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage
+})
 
 Vue.use(Vuex)
 
@@ -15,5 +20,6 @@ export default new Vuex.Store({
         settings,
         notebooks
     },
-    getters
+    getters,
+    plugins: [vuexLocal.plugin]
 })

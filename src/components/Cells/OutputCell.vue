@@ -1,6 +1,6 @@
 <template>
     <div class="output-cell">
-        
+        {{item.content}}
     </div>
 </template>
 
@@ -12,6 +12,7 @@
     export default Vue.extend({
         props: {
             item: Object as PropType<OutputCell>,
+            id: String,
         },
         components: {
 

@@ -63,6 +63,13 @@ export default {
                 throw new Error('Files failed: ' + e)
             }
         }, 
+        async saveFile({ commit, dispatch }: { commit: Commit; dispatch: Dispatch }, { file, body }: { file: string; body: string}) {
+            try {
+                const res = await api.post('/fileSystem', { file, body })
+            } catch (e) {
+                throw new Error('saveFile failed: ' + e)
+            }
+        }, 
         //  delete to trash
     }
 }

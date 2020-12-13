@@ -1,7 +1,8 @@
 <template>
     <div class="cell">
-        <InputCell :item="item.input"/>
-        <OutputCell :item="item.output"/>
+        <InputCell :item="item.input" :id="item.id"/>
+        <v-btn text @click="evalCell">eval</v-btn>
+        <OutputCell :item="item.output" :id="item.id"/>
     </div>
 </template>
 
@@ -11,6 +12,7 @@
     import OutputCell from './OutputCell.vue'
     import { PropType } from 'vue'
     import Cell from '@/types/Cell'
+    import { mapActions, mapGetters } from 'vuex'
 
     export default Vue.extend({
         props: {
@@ -26,10 +28,13 @@
             }
         },
         computed: {
-
+            ...mapGetters(['kernel']),
         },
         methods: {
-
+            ...mapActions(['eval']),
+			evalCell() {
+                this.eval({ kernel: this.kernel, cell: this.item })
+			},
         },
     })
 
