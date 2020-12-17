@@ -1,10 +1,37 @@
+import { parentDirectories } from './../../../node_modules/gm_node/index.js'
 import { Directory, File } from '@/types/FileSystem'
 import { Getters } from '@/types/store'
 import { Commit, Dispatch, ActionTree } from 'vuex'
 import api from '../../api'
+import Vue from 'vue'
 
 export interface State {
     files: (File | Directory)[];
+}
+
+function searchDirectory(files: (File | Directory)[], dir: string) {
+    const parents = parentDirectories(dir)
+    let stack = [...files]
+    while (stack.length) {
+        const el = stack.pop()
+        if (el?.name === dir) {
+            return el
+        }
+        if (~parents.indexOf(el)) {
+            if (el.files) {
+                stack = el.files
+            } else {
+                return null
+            }
+        }
+    }
+}
+
+function formatFile(file) {
+    return {
+        name: file.path,
+        info: { ...file }                        
+    }    
 }
 
 export default {
@@ -15,24 +42,23 @@ export default {
 		SET_FILES: (state: State, files: (File | Directory)[]) => {
             state.files = files
         },
-        //Recursive find
-		// SET_CHILDREN: (state: State, { dir, files }: { dir: string, files: (File | Directory)[] }) => {
-        //     const dirEl = state.files.find(el => el.name === dir)
-        //     if (dirEl && dirEl.files) {                
-        //         dirEl.files = files
-        //     }
-        // },
+        SET_CHILDREN: (state: State, { dir, files }: { dir: string; files: (File | Directory)[] }) => {
+            const dirEl = searchDirectory(state.files, dir)
+            if (dirEl) {                
+                Vue.set(dirEl, 'files', files)
+            }
+        },
     },
     actions: {
-		async getFiles({ commit }: { commit: Commit }, dir: string) {
+        async getFiles({ commit, getters }: { commit: Commit; getters: Getters }, dir: string) {
             try {
-                const res = await api.get('/fileSystem?path=' + dir)
-                commit('SET_FILES', res.data.map((file: any) => {
-                    return {
-                        name: file.path,
-                        info: { ...file }                        
-                    }
-                })) // OR SET_CHILDREN
+                const res = await api.get('/fileSystem?path=' + dir)     
+                const rootIsParent = ~parentDirectories(dir).indexOf(getters.root)
+                if (rootIsParent) {
+                    commit('SET_CHILDREN', { dir, files: res.data.map(formatFile) })                     
+                } else { 
+                    commit('SET_FILES', res.data.map(formatFile))                     
+                }
             } catch (e) {
                 throw new Error('Files failed: ' + e)
             }

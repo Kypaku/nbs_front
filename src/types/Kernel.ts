@@ -6,5 +6,5 @@ export default interface Kernel {
 }
 
 export interface KernelSettings {
-
+    type: string //server | browser | electron
 }

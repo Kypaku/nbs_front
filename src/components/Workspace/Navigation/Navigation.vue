@@ -41,11 +41,11 @@
 
 <style lang="scss" scoped>
 	.nav-item {
-		background: rgb(221, 230, 233);
+		background: rgb(245, 230, 233);
         padding: 4px 8px;
 	}
 	.active{
-        background: rgb(243, 245, 247);
+        background: rgb(247, 243, 245);
 	}
 
 </style>

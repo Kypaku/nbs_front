@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:3000'
 
 const token = 'kin6crrh0.mhkttl7lyt0.maxizxxc94b'
 
-export const startDir = 'E:\\NodeScripts\\nbs'
+export const startDir = 'E:/NodeScripts/nbs'
 
 const axiosInstance = axios.create({
     baseURL: API_URL,

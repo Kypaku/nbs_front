@@ -1,5 +1,6 @@
 <template>
     <div class="filesystem">
+        <v-btn text @click="up">..</v-btn>
         <Teatree :roots="formatted">
             <template slot="node-toggle" slot-scope="{ node }">
                 <NodeToggle :node="node" />
@@ -12,41 +13,30 @@
                 />
             </template>
         </Teatree>
-        {{files}}
+        <!-- {{files}} -->
     </div>
 </template>
 
 <script lang='ts'>
+	import { parentDirectory } from './../../../node_modules/gm_node/index.js'
     import { Directory, File } from '@/types/FileSystem'
-import { Vue } from 'vue-property-decorator'
+    import { Vue } from 'vue-property-decorator'
     import { Teatree, NodeType, NodeName, NodeToggle } from 'vue-teatree'
-import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
 
-    const data: NodeType[] = [
-        {
-            name: 'parent',
+    function formatFile(file: File | Directory, state) {
+        const splitted = file.name.split('/')
+        return {
+            name: splitted[splitted.length - 1],
             show: true,
-            showChildren: true,
+            children: file.files ? file.files.map(el => formatFile(el, state)) : [],
+            showChildren: !!state[file.name],
+            data: file,
             selected: false,
-            children: [
-            {
-                name: 'child',
-                show: true,
-                showChildren: true,
-                selected: false,
-                children: [
-                {
-                    name: 'grandchild',
-                    show: true,
-                    showChildren: true,
-                    selected: false,
-                    children: [],
-                },
-                ],
-            },
-            ],
-        },
-    ]
+        }
+    }
+
+    const treeState = {}
 
     export default Vue.extend({
         components: {
@@ -56,33 +46,29 @@ import { mapActions, mapGetters } from 'vuex'
         },
         data() {
             return {
-                data
+
             }
         },
         computed: {
-            ...mapGetters(['files']),
+            ...mapGetters(['files', 'root']),
             formatted(): NodeType[] {
-                return this.files.map((file: File | Directory) => {
-                    const splitted = file.name.split('/')
-                    return {
-                        name: splitted[splitted.length - 1],
-                        show: true,
-                        children: [],
-                        showChildren: file.info?.isDir,
-                        data: file
-                    }
-                })
+                return this.files.map(el => formatFile(el, treeState))
             }
         },
         methods: {
             ...mapActions(['openFile', 'getFiles']),
+			up() {
+                this.getFiles(parentDirectory(this.root))
+			},
 			open(node: NodeType) {
                 if (node.data.info.isDir) {
-                    //get children
-                    // this.getFiles(node.data.name)
+                    this.getFiles(node.data.name)
+                    treeState[node.data.name] = !node.showChildren
                 } else {
                     this.openFile(node.data.name)
                 }
+                
+                return true
 			},
             // getList
             // open notebook
